@@ -606,7 +606,7 @@ namespace CustomParachuteMessage
                     c6 = 0;
                     w2 = "E";
                 }
-                if (GUILayout.Button("KSC 1"))
+                if (GUILayout.Button("KSC"))
                 {
                     word_1 = "Kerbal";
                     word_2 = "Space";
@@ -620,22 +620,6 @@ namespace CustomParachuteMessage
                     c4 = 74;
                     c5 = 34;
                     c6 = 31;
-                    w2 = "W";
-                }
-                if (GUILayout.Button("KSC 2"))
-                {
-                    word_1 = "Kennedy";
-                    word_2 = "Space";
-                    word_3 = "Center";
-                    word_4 = "";
-                    ring4IsCoordinate = true;
-                    c1 = 28;
-                    c2 = 34;
-                    c3 = 24;
-                    w1 = "N";
-                    c4 = 80;
-                    c5 = 39;
-                    c6 = 4;
                     w2 = "W";
                 }
                 if (GUILayout.Button("Rocket Science"))
@@ -722,105 +706,105 @@ namespace CustomParachuteMessage
                         data[i] = 1;
                     }
                 }
-                if (GUILayout.Button("Checkerboard 1"))
+                if (GUILayout.Button("Checkerboard"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = (i % 2 == (i / 80 % 2)) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Checkerboard 2"))
+                if (GUILayout.Button("Thick Checkerboard"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = ((i + (i / 80 % 2) * 2) % 4 >= 2) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Checkerboard 3"))
+                if (GUILayout.Button("Slightly Different Thick Checkerboard"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = ((i + (i / 80 % 2) * 2 + 1) % 4 >= 2) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Checkerboard 4"))
+                if (GUILayout.Button("Thicker Checkerboard"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = ((i + (i / 80 % 2) * 4) % 8 >= 4) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Checkerboard 5"))
+                if (GUILayout.Button("Extra Thicc Checkerboard"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = ((i + (i / 80 % 2) * 5) % 10 >= 5) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Checkerboard 6"))
+                if (GUILayout.Button("Even Thicker Checkerboard"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = ((i + (i / 80 % 2) * 10) % 20 >= 10) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Checkerboard 7"))
+                if (GUILayout.Button("Super Thicc Checkerboard"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = ((i + (i / 80 % 2) * 20) % 40 >= 20) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Checkerboard 8"))
+                if (GUILayout.Button("Ultra Thicc Checkerboard"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = ((i + (i / 80 % 2) * 40) % 80 >= 40) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Strip 1"))
+                if (GUILayout.Button("Strip"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = (i % 2 == 0) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Strip 2"))
+                if (GUILayout.Button("Thick Strip"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = (i % 4 >= 2) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Strip 3"))
+                if (GUILayout.Button("Thicker Strip"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = (i % 8 >= 4) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Strip 4"))
+                if (GUILayout.Button("Extra Thicc Strip"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = (i % 10 >= 5) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Strip 5"))
+                if (GUILayout.Button("Even Thicker Strip"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = (i % 20 >= 10) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Strip 6"))
+                if (GUILayout.Button("Super Thicc Strip"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
                         data[i] = (i % 40 >= 20) ? 1 : 0;
                     }
                 }
-                if (GUILayout.Button("Strip 7"))
+                if (GUILayout.Button("Not Even Strip Anymore"))
                 {
                     for (int i = 0; i < data.Length; i++)
                     {
