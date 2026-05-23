@@ -31,20 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Real_Data\Managed\Assembly-CSharp.dll</HintPath>
+    <Reference Include="$(KSPDIR)/KSP_x64_Data/Managed/Assembly-CSharp.dll">
     </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Real_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+    <Reference Include="$(KSPDIR)/KSP_x64_Data/Managed/Assembly-CSharp-firstpass.dll">
     </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Real_Data\Managed\Mono.Cecil.dll</HintPath>
+    <Reference Include="$(KSPDIR)/KSP_x64_Data/Managed/Mono.Cecil.dll">
     </Reference>
-    <Reference Include="Mono.Posix">
-      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Real_Data\Managed\Mono.Posix.dll</HintPath>
+    <Reference Include="$(KSPDIR)/KSP_x64_Data/Managed/Mono.Posix.dll">
     </Reference>
-    <Reference Include="Mono.Security">
-      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Real_Data\Managed\Mono.Security.dll</HintPath>
+    <Reference Include="$(KSPDIR)/KSP_x64_Data/Managed/Mono.Security.dll">
     </Reference>
     <Reference Include="System">
       <Private>True</Private>
@@ -70,18 +65,13 @@
     <Reference Include="System.Xml">
       <Private>True</Private>
     </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Real_Data\Managed\UnityEngine.dll</HintPath>
+    <Reference Include="$(KSPDIR)/KSP_x64_Data/Managed/UnityEngine.dll">
     </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>D:\Program Files\Unity\2019.3.12f1\Editor\Data\Managed\UnityEngine\UnityEngine.AssetBundleModule.dll</HintPath>
+    <Reference Include="$(KSPDIR)/KSP_x64_Data/Managed/UnityEngine.AssetBundleModule.dll">
     </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Real_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    <Reference Include="$(KSPDIR)/KSP_x64_Data/Managed/UnityEngine.CoreModule.dll">
     </Reference>
-    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Real_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+    <Reference Include="$(KSPDIR)/KSP_x64_Data/Managed/UnityEngine.IMGUIModule.dll">
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -89,4 +79,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+	<PropertyGroup>
+		<PostBuildEvent>
+			xcopy /y /i "$(TargetPath)" "$(SolutionDir)\GameData\CustomParachuteMessage\Plugins\"
+
+			xcopy /y /i "$(TargetPath)" "$(KSPRoot)\GameData\CustomParachuteMessage\Plugins\"
+		</PostBuildEvent>
+	</PropertyGroup>
 </Project>

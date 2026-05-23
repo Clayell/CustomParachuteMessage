@@ -1,6 +1,6 @@
-﻿using KSP;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 using System.IO;
 using System.Text;
 using System.Linq;
@@ -44,7 +44,7 @@ namespace CustomParachuteMessage
 
                     if (!File.Exists(path))
                     {
-                        Debug.LogError($"[Custom Parachute Message] Assetbundle {path} is " +
+                        LogError($"Assetbundle {path} is " +
                             $"missing!");
                         return null;
                     }
@@ -53,7 +53,7 @@ namespace CustomParachuteMessage
 
                     if (resourcesAB == null) // just to be extra safe
                     {
-                        Debug.LogError($"[Custom Parachute Message] Error when loading {path}!");
+                        LogError($"Error when loading {path}!");
                         return null;
                     }
                 }
@@ -105,6 +105,16 @@ namespace CustomParachuteMessage
         private bool updated = false;
         #endregion
 
+        private static void Log(string message)
+        {
+            Debug.Log($"[Custom Parachute Message] {message}");
+        }
+
+        private static void LogError(string message)
+        {
+            Debug.LogError($"[Custom Parachute Message] {message}");
+        }
+
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
@@ -141,29 +151,29 @@ namespace CustomParachuteMessage
 
         private void Setup()
         {
-            Debug.Log($"[Custom Parachute Message] Replacing material");
+            Log($"Replacing material");
 
             parachuteModel = new List<Transform>();
 
             Shader chuteShader = ResourcesAB.LoadAsset<Shader>("MessageChute");
             if (!chuteShader)
-                Debug.LogError($"[Custom Parachute Message] Chute shader is missing in " +
+                LogError($"Chute shader is missing in " +
                     $"asset bundle!");
 
             Shader ropeShader = ResourcesAB.LoadAsset<Shader>("Rope");
             if (!ropeShader)
-                Debug.LogError($"[Custom Parachute Message] Rope shader is missing in " +
+                LogError($"Rope shader is missing in " +
                     $"asset bundle!");
 
             Material chuteMaterial = ResourcesAB.LoadAsset<Material>("Chute");
             if (!chuteMaterial)
-                Debug.LogError($"[Custom Parachute Message] Chute material is missing in " +
+                LogError($"Chute material is missing in " +
                     $"asset bundle!");
             Material chuteMaterial_clone = new Material(chuteMaterial);
 
             Material ropeMaterial = ResourcesAB.LoadAsset<Material>("RopeMat");
             if (!ropeMaterial)
-                Debug.LogError($"[Custom Parachute Message] Rope material is missing in " +
+                LogError($"Rope material is missing in " +
                     $"asset bundle!");
 
 
@@ -173,57 +183,62 @@ namespace CustomParachuteMessage
 
             foreach (Transform child in GetAllChildren(transform))
             {
-                // hey that's my boi
-                if (child.name.Contains("model_canopyWithMessage"))
+                bool SetUpChute(string name, string rope, string rope_up, string canopy)
                 {
-                    // Fix real chute scale because why the parent transform has asymmetric scale
-                    // The y will be different from x and z, resulting a elliptical chute
-                    // WHY???
-
-                    Vector3 parentScale = child.parent.transform.localScale;
-                    if (parentScale.x == parentScale.z && parentScale.y != parentScale.x)
+                    if (child.name.Contains(name))
                     {
-                        Transform parent = child.parent;
-                        parentScale.y = parentScale.x;
-                        child.parent = parent.parent;
-                        parent.transform.localScale = parentScale;
-                        child.parent = parent;
-                        child.localScale = Vector3.one * child.localScale.x;
+                        // Fix real chute scale because why the parent transform has asymmetric scale
+                        // The y will be different from x and z, resulting a elliptical chute
+                        // WHY???
 
-                        Debug.Log($"[Custom Parachute Message] Real chute scale fixed on " +
-                            $"{parent.name}");
-                    }
-
-                    // now we can replace the material
-
-                    foreach (Transform chutePart in GetAllChildren(child))
-                    {
-                        switch (chutePart.name)
+                        Vector3 parentScale = child.parent.transform.localScale;
+                        if (parentScale.x == parentScale.z && parentScale.y != parentScale.x)
                         {
-                            case "rope":
-                                chutePart.GetComponent<MeshRenderer>()
-                                    .sharedMaterial = ropeMaterial;
-                                break;
-                            case "rope_up":
-                                chutePart.GetComponent<MeshRenderer>()
-                                    .sharedMaterial = ropeMaterial;
-                                break;
-                            case "canopy":
-                                chutePart.GetComponent<MeshRenderer>()
-                                    .sharedMaterial = chuteMaterial_clone;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
+                            Transform parent = child.parent;
+                            parentScale.y = parentScale.x;
+                            child.parent = parent.parent;
+                            parent.transform.localScale = parentScale;
+                            child.parent = parent;
+                            child.localScale = Vector3.one * child.localScale.x;
 
-                    parachuteModel.Add(child);
+                            Log($"Real chute scale fixed on " +
+                                $"{parent.name}");
+                        }
+
+                        // now we can replace the material
+
+                        foreach (Transform chutePart in GetAllChildren(child))
+                        {
+                            string chutePartName = chutePart.name;
+
+                            if (chutePartName.Equals(rope, StringComparison.OrdinalIgnoreCase))
+                            {
+                                chutePart.GetComponent<MeshRenderer>().sharedMaterial = ropeMaterial;
+                            }
+                            else if (chutePartName.Equals(rope_up, StringComparison.OrdinalIgnoreCase))
+                            {
+                                chutePart.GetComponent<MeshRenderer>().sharedMaterial = ropeMaterial;
+                            }
+                            else if (chutePartName.Equals(canopy, StringComparison.OrdinalIgnoreCase))
+                            {
+                                chutePart.GetComponent<MeshRenderer>().sharedMaterial = chuteMaterial_clone;
+                            }
+                        }
+
+                        parachuteModel.Add(child);
+
+                        return true;
+                    }
+                    else return false;
                 }
+
+                if (!SetUpChute("model_canopyWithMessage2", "rope2", "rope_up2", "canopy2"))
+                    SetUpChute("model_canopyWithMessage", "rope", "rope_up", "canopy"); // do this one after because otherwise it would capture model_canopyWithMessage2
             }
 
             if (parachuteModel.Count == 0)
             {
-                Debug.Log($"[Custom Parachute Message] Found no compatible model");
+                Log($"Found no compatible model");
             }
 
             // validating parameter
@@ -234,7 +249,7 @@ namespace CustomParachuteMessage
             chuteMaterial_clone.SetColor("_color_A", HexToColor(color1Store));
             chuteMaterial_clone.SetColor("_color_B", HexToColor(color2Store));
 
-            Debug.Log($"[Custom Parachute Message] All done!");
+            Log($"All done!");
         }
 
         // Editor customization window button
@@ -362,13 +377,13 @@ namespace CustomParachuteMessage
         {
             mode = bitMode ? 1 : 0;
 
-            Debug.Log($"[Custom Parachute Message] Open window");
+            //Log($"Open window");
             showWindow = true;
 
             // load preview model
             GameObject previewModel = ResourcesAB.LoadAsset<GameObject>("PreviewModel");
             if (!previewModel)
-                Debug.LogError($"[Custom Parachute Message] Preview Model is missing in " +
+                LogError($"Preview Model is missing in " +
                     $"asset bundle!");
 
             previewModelTransform = Instantiate(previewModel).transform;
@@ -388,10 +403,10 @@ namespace CustomParachuteMessage
 
         private void CloseWindow()
         {
-            Debug.Log($"[Custom Parachute Message] Close Window");
+            //Log($"Close Window");
             showWindow = false;
             DestroyImmediate(previewModelTransform.gameObject);
-            Debug.Log($"[Custom Parachute Message] Preview Object Destroyed");
+            //Log($"Preview Object Destroyed");
         }
 
         void OnGUI()
